@@ -74,4 +74,79 @@ public class ArraySorter {
       
     }
 
+    public void quickSort(double[] array,int from,int to){
+        if(from < to) {
+            double pivot = array[from];
+            int leftMarker = from + 1;
+            int rightMarker = to;
+            boolean stop = false;
+
+            while (!stop) {
+                while (leftMarker <= rightMarker && array[leftMarker] < pivot) {
+                    leftMarker++;
+                }
+
+                while ( leftMarker <= rightMarker && array[rightMarker] > pivot) {
+                    rightMarker--;
+                }
+
+                if (leftMarker > rightMarker) {
+                    stop = true;
+                }else {
+                    double temp = array[leftMarker];
+                    array[leftMarker] = array[rightMarker];
+                    array[rightMarker] = temp;
+                }
+            }
+            double temp = array[from];
+            array[from] = array[rightMarker];
+            array[rightMarker] = temp;
+            quickSort(array,from,rightMarker-1);
+            quickSort(array,rightMarker+1,to);
+        }
+    }
+
+    public void heapify(double[] array,int i,int length){
+        int left = 2*i;
+        int right = 2*i+1;
+        int largest=i;
+        if(left<=length && array[left-1] > array[i-1]){
+            largest = left;
+        }
+
+        if(right <= length && array[right -1] > array[largest-1]){
+            largest = right;
+        }
+
+        if(largest != i){
+            double temp = array[i-1];
+            array[i-1] = array[largest-1];
+            array[largest-1] = temp;
+            heapify(array,largest,length);
+        }
+    }
+
+    public void heapSort(double[] array){
+        int length = array.length;
+        //create max heap
+        for (int i = array.length/2+1;i>0;i--){
+            heapify(array,i,length);
+        }
+        //sort
+        for (int i = array.length;i>0;i--){
+            double temp = array[0];
+            array[0] = array[length-1];
+            array[length-1] = temp;
+            length--;
+            heapify(array,1,length);
+        }
+    }
+
+    public static void printArray(double[] array){
+        for (int i = 0; i < array.length; i++){
+            System.out.format("%.3f ",array[i]);
+        }
+        System.out.print("\n");
+    }
+
 }
